@@ -9,67 +9,102 @@ var velocity = Vector2(0,0)
 
 var direction_y
 
+var global_hor_dir
+var global_vert_dir
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
 	$Ball.position.x = 500
 	$Ball.position.y = 350
 	
-	velocity = getVelocity("right_up")
+	velocity = getVelocity("right", "any")
 	print("_ready() velocity: ", velocity)
 #
 #func changeDirection():
 	#direction_y = $Ball.position.y + 
 	
-func getVelocity(direction):
-	print("getVelocity() called")
+func getVelocity(hor_dir, vert_dir):
+
 	var cur_dir = Vector2(0,0)
 	var newVelocity = cur_dir * ball_speed
+	print("getVelocity() called")
+	var x_value
+	var y_value
 	
-	if (direction == "right"):
-		newVelocity = Vector2(1,0) * ball_speed
-		
-	elif (direction == "left"):
-		newVelocity = Vector2(-1,0) * ball_speed 
-		
-	elif (direction == "up"):
-		newVelocity = Vector2(0,-1) * ball_speed
-		
-	elif (direction == "down"):
-		newVelocity = Vector2(0,1) * ball_speed 
-		
-	elif (direction == "right_up"):
-		cur_dir = Vector2(1,-1)
-		cur_dir = cur_dir.normalized()
-		newVelocity = cur_dir * ball_speed
-		
-	elif (direction == "right_down"):
-		cur_dir = Vector2(1,1)
-		cur_dir = cur_dir.normalized()
-		newVelocity = cur_dir * ball_speed
+	var vert_dir_list = ["up", "down"]
 	
-	elif (direction == "left_down"):
-		cur_dir = Vector2(-1,1)
-		cur_dir = cur_dir.normalized()
-		newVelocity = cur_dir * ball_speed
+	if vert_dir == "any":
+		vert_dir = vert_dir_list.pick_random()
+		print("'any' transformed to: ", vert_dir)
 		
-	elif (direction == "left_up"):
-		cur_dir = Vector2(-1,-1)
-		cur_dir = cur_dir.normalized()
-		newVelocity = cur_dir * ball_speed
+	
+	if(hor_dir == "left"):
+		x_value = -1
+	elif(hor_dir == "right"):
+		x_value = 1
+		
+	if(vert_dir == "up"):
+		y_value = -1
+	elif(vert_dir == "down"):
+		y_value = 1
+		
+	print("Expected new vector: ", x_value, ", ", y_value)
+		
+	cur_dir = Vector2(x_value,y_value)
+	cur_dir = cur_dir.normalized()
+	newVelocity = cur_dir * ball_speed
+	
+	#if (direction == "right"):
+		#newVelocity = Vector2(1,0) * ball_speed
+		#
+	#elif (direction == "left"):
+		#newVelocity = Vector2(-1,0) * ball_speed 
+		#
+	#elif (direction == "up"):
+		#newVelocity = Vector2(0,-1) * ball_speed
+		#
+	#elif (direction == "down"):
+		#newVelocity = Vector2(0,1) * ball_speed 
+		
+	#if (direction == "right_up"):
+		#cur_dir = Vector2(1,-1)
+		#cur_dir = cur_dir.normalized()
+		#newVelocity = cur_dir * ball_speed
+		#
+	#elif (direction == "right_down"):
+		#cur_dir = Vector2(1,1)
+		#cur_dir = cur_dir.normalized()
+		#newVelocity = cur_dir * ball_speed
+	#
+	#elif (direction == "left_down"):
+		#cur_dir = Vector2(-1,1)
+		#cur_dir = cur_dir.normalized()
+		#newVelocity = cur_dir * ball_speed
+		#
+	#elif (direction == "left_up"):
+		#cur_dir = Vector2(-1,-1)
+		#cur_dir = cur_dir.normalized()
+		#newVelocity = cur_dir * ball_speed
+		#
+		
+	global_hor_dir = hor_dir
+	global_vert_dir = vert_dir
 		
 	return newVelocity
 
 func changeVelocity(collisionArea):
 	print("changeVelocity() called")
 	if (collisionArea == "TopBounce"):
-		velocity = getVelocity("right_down")
+		velocity = getVelocity(global_hor_dir,"down")
 	if (collisionArea == "PlayerWin"):
-		velocity = getVelocity("left_down")
+		#hor_dir = "right"
+		velocity = getVelocity("left","any")
 	if (collisionArea == "BottomBounce"):
-		velocity = getVelocity("left_up")
+		velocity = getVelocity(global_hor_dir,"up")
 	if (collisionArea == "PlayerDeath"):
-		velocity = getVelocity("right_up")
+		#hor_dir = "left"
+		velocity = getVelocity("right","any")
 	return velocity
 	
 
@@ -108,4 +143,3 @@ func _on_player_death_body_entered(body: Node2D) -> void:
 	print("_on_player_death_body_entered() called")
 	print("Ball entered left area")
 	velocity = changeVelocity("PlayerDeath")
-	pass # Replace with function body.
