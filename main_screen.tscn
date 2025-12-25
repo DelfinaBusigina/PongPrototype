@@ -44,3 +44,8 @@ shape = SubResource("RectangleShape2D_kwhh3")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerWin"]
 position = Vector2(1151, 321)
 shape = SubResource("RectangleShape2D_4sclt")
+
+[connection signal="body_entered" from="TopBounce" to="." method="_on_top_bounce_body_entered"]
+[connection signal="body_entered" from="BottomBounce" to="." method="_on_bottom_bounce_body_entered"]
+[connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_body_entered"]
+[connection signal="body_entered" from="PlayerWin" to="." method="_on_player_win_body_entered"]
