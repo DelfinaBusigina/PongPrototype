@@ -20,9 +20,8 @@ func _ready():
 	
 	velocity = getVelocity("right", "any")
 	print("_ready() velocity: ", velocity)
-#
-#func changeDirection():
-	#direction_y = $Ball.position.y + 
+	
+#func get
 	
 func getVelocity(hor_dir, vert_dir):
 
@@ -54,39 +53,6 @@ func getVelocity(hor_dir, vert_dir):
 	cur_dir = Vector2(x_value,y_value)
 	cur_dir = cur_dir.normalized()
 	newVelocity = cur_dir * ball_speed
-	
-	#if (direction == "right"):
-		#newVelocity = Vector2(1,0) * ball_speed
-		#
-	#elif (direction == "left"):
-		#newVelocity = Vector2(-1,0) * ball_speed 
-		#
-	#elif (direction == "up"):
-		#newVelocity = Vector2(0,-1) * ball_speed
-		#
-	#elif (direction == "down"):
-		#newVelocity = Vector2(0,1) * ball_speed 
-		
-	#if (direction == "right_up"):
-		#cur_dir = Vector2(1,-1)
-		#cur_dir = cur_dir.normalized()
-		#newVelocity = cur_dir * ball_speed
-		#
-	#elif (direction == "right_down"):
-		#cur_dir = Vector2(1,1)
-		#cur_dir = cur_dir.normalized()
-		#newVelocity = cur_dir * ball_speed
-	#
-	#elif (direction == "left_down"):
-		#cur_dir = Vector2(-1,1)
-		#cur_dir = cur_dir.normalized()
-		#newVelocity = cur_dir * ball_speed
-		#
-	#elif (direction == "left_up"):
-		#cur_dir = Vector2(-1,-1)
-		#cur_dir = cur_dir.normalized()
-		#newVelocity = cur_dir * ball_speed
-		#
 		
 	global_hor_dir = hor_dir
 	global_vert_dir = vert_dir
@@ -117,28 +83,25 @@ func _process(delta):
 	if i == 40:
 		print("_process() velocity: ",velocity)
 		i = 0
-	
-	#pass
 
-
-func _on_top_bounce_body_entered(body: Node2D) -> void:
+func _on_top_bounce_body_entered(_body: Node2D) -> void:
 	print("_on_top_bounce_body_entered() called")
 	print("Ball entered top area")
 	velocity = changeVelocity("TopBounce")
 
 
-func _on_player_win_body_entered(body: Node2D) -> void:
+func _on_player_win_body_entered(_body: Node2D) -> void:
 	#For testing purposes will be substituting the enemy platform
 	print("_on_player_win_body_entered() called")
 	print("Ball entered right area")
 	velocity = changeVelocity("PlayerWin")
 	
-func _on_bottom_bounce_body_entered(body: Node2D) -> void:
+func _on_bottom_bounce_body_entered(_body: Node2D) -> void:
 	print("_on_bottom_bounce_body_entered() called")
 	print("Ball entered bottom area")
 	velocity = changeVelocity("BottomBounce")
 	
-func _on_player_death_body_entered(body: Node2D) -> void:
+func _on_player_death_body_entered(_body: Node2D) -> void:
 	#For testing purposes will be substituting the player platform
 	print("_on_player_death_body_entered() called")
 	print("Ball entered left area")
