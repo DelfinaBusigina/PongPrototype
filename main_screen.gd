@@ -21,15 +21,20 @@ func _ready():
 	velocity = getVelocity("right", "any")
 	print("_ready() velocity: ", velocity)
 	
-#func get
+func getMovementValues(min, max):
+	var randint:float = randi_range(min,max)
+	print("Integer: ", randint)
+	var flvalue:float = randint/10
+	print("Float: ", flvalue)
+	return flvalue
 	
 func getVelocity(hor_dir, vert_dir):
 
 	var cur_dir = Vector2(0,0)
 	var newVelocity = cur_dir * ball_speed
 	print("getVelocity() called")
-	var x_value
-	var y_value
+	var x_value = 0
+	var y_value = 0
 	
 	var vert_dir_list = ["up", "down"]
 	
@@ -39,14 +44,14 @@ func getVelocity(hor_dir, vert_dir):
 		
 	
 	if(hor_dir == "left"):
-		x_value = -1
+		x_value = getMovementValues(-10, -1)
 	elif(hor_dir == "right"):
-		x_value = 1
+		x_value = getMovementValues(1,10)
 		
 	if(vert_dir == "up"):
-		y_value = -1
+		y_value = getMovementValues(-10, -1)
 	elif(vert_dir == "down"):
-		y_value = 1
+		y_value = getMovementValues(1,10)
 		
 	print("Expected new vector: ", x_value, ", ", y_value)
 		
@@ -65,11 +70,13 @@ func changeVelocity(collisionArea):
 		velocity = getVelocity(global_hor_dir,"down")
 	if (collisionArea == "PlayerWin"):
 		#hor_dir = "right"
+		ball_speed+=50
 		velocity = getVelocity("left","any")
 	if (collisionArea == "BottomBounce"):
 		velocity = getVelocity(global_hor_dir,"up")
 	if (collisionArea == "PlayerDeath"):
 		#hor_dir = "left"
+		ball_speed+=50
 		velocity = getVelocity("right","any")
 	return velocity
 	
@@ -77,11 +84,14 @@ func changeVelocity(collisionArea):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	
+		
 	$Ball.position += velocity * delta
 	
 	i += 1
 	if i == 40:
 		print("_process() velocity: ",velocity)
+		print("Ball speed: ", ball_speed)
 		i = 0
 
 func _on_top_bounce_body_entered(_body: Node2D) -> void:
